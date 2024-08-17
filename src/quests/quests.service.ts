@@ -1,43 +1,60 @@
 import {Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {DeepPartial, Repository} from 'typeorm';
+import {DeepPartial, FindManyOptions, Repository} from 'typeorm';
 import {RequestCreateQuestsDto} from './dto/requestCreateQuestsDto';
-import {Quests} from './quests.entity';
+import {Quest} from './quests.entity';
 import {Question} from "./question.entity";
 import {Answer} from "./answer.entity";
 
 @Injectable()
 export class QuestsService {
   constructor(
-    @InjectRepository(Quests)
-    private questsRepository: Repository<Quests>,
+    @InjectRepository(Quest)
+    private questsRepository: Repository<Quest>,
   ) {}
 
-  // async createQuests(createQuestDto: RequestCreateQuestsDto): Promise<Quests> {
-  //   const { questions, ...questData } = createQuestDto;
-  //
-  //   const quest = this.questsRepository.create({
-  //     ...questData,
-  //     questions: questions.map((questionDto) => {
-  //       // Create the answers first
-  //       const answers = questionDto.answers.map((answerDto) => {
-  //         return this.questsRepository.manager.create(Answer, {
-  //           content: answerDto.content,
-  //         } as DeepPartial<Answer>);
-  //       });
-  //
-  //       // Create the question with associated answers
-  //       return this.questsRepository.manager.create(Question, {
-  //         question: questionDto.question,
-  //         correct_answer: questionDto.correctAnswer,
-  //         answers: answers,
-  //       } as DeepPartial<Question>);
-  //     }),
-  //   });
-  //
-  //   return this.questsRepository.save(quest);
-  // }
-  async createQuests(createQuestDto: RequestCreateQuestsDto): Promise<Quests> {
+
+  async getQuestList() {
+    const questList = await this.questsRepository.find({
+      relations: {
+        questions: {
+          answers: true,
+        },
+      },
+      order: {
+        id: 'ASC',
+        questions: {
+          id: 'ASC',
+          answers: {
+            id: 'ASC',
+          },
+        },
+      },
+    } as FindManyOptions<Quest>);
+
+    return questList.map((quest) => ({
+      id: quest.id,
+      title: quest.title,
+      content: quest.content,
+      type: quest.type,
+      liquidityProvider: quest.liquidity_provider,
+      provider: quest.provider,
+      createdAt: quest.created_at,
+      modifiedAt: quest.modified_at,
+      questions: quest.questions.map((question) => ({
+        id: question.id,
+        question: question.question,
+        correctAnswer: question.correct_answer,
+        answers: question.answers.map((answer, index) => ({
+          id: answer.id,
+          content: answer.content,
+          correctAnswer: index === question.correct_answer,
+        })),
+      })),
+    }));
+  }
+
+  async createQuest(createQuestDto: RequestCreateQuestsDto): Promise<Quest> {
     const { questions, ...questData } = createQuestDto;
 
     const quest = this.questsRepository.create({
@@ -59,4 +76,7 @@ export class QuestsService {
 
     return this.questsRepository.save(quest);
   }
+
+
 }
+

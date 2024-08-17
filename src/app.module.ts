@@ -8,7 +8,7 @@ import {UserService} from './users/user.service';
 import {User} from './users/user.entity';
 import {QuestsController} from "./quests/quests.controller";
 import {QuestsService} from "./quests/quests.service";
-import {Quests} from "./quests/quests.entity";
+import {Quest} from "./quests/quests.entity";
 import {Answer} from "./quests/answer.entity";
 import {Question} from "./quests/question.entity";
 
@@ -26,12 +26,12 @@ import {Question} from "./quests/question.entity";
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [User, Quests, Answer, Question],
+        entities: [User, Quest, Answer, Question],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Quests, Answer, Question]),
+    TypeOrmModule.forFeature([User, Quest, Answer, Question]),
   ],
   controllers: [UserController, QuestsController],
   providers: [UserService, QuestsService],

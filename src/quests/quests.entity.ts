@@ -9,38 +9,8 @@ import {
 import { Question } from './question.entity';
 import {questsType} from "./dto/requestCreateQuestsDto";
 
-// @Entity()
-// export class Quests {
-//   @PrimaryGeneratedColumn()
-//   id: bigint;
-//
-//   @Column({ type: 'varchar', length: 50 })
-//   liquidityProvider: string;
-//
-//   @Column({ type: 'varchar', length: 50 })
-//   provider: string;
-//
-//   @CreateDateColumn()
-//   createdAt: Date;
-//
-//   @UpdateDateColumn()
-//   modifiedAt: Date;
-//
-//   @Column({ type: 'varchar', length: 50 })
-//   title: string;
-//
-//   @Column({ type: 'varchar', length: 255 })
-//   content: string;
-//
-//   @Column({ type: 'enum', enum: questsType })
-//   type: questsType;
-//
-//   @OneToMany(() => Question, (question) => question.quest, { cascade: true })
-//   questions: Question[];
-// }
-
 @Entity()
-export class Quests {
+export class Quest {
   @PrimaryGeneratedColumn()
   id: bigint;
 

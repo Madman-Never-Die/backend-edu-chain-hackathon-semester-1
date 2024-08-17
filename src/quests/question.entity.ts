@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn} from 'typeorm';
-import { Quests } from './quests.entity';
+import { Quest } from './quests.entity';
 import { Answer } from './answer.entity';
 
 // @Entity()
@@ -13,8 +13,8 @@ import { Answer } from './answer.entity';
 //   @Column({ type: 'int' })
 //   correctAnswer: number;
 //
-//   @ManyToOne(() => Quests, (quest) => quest.questions)
-//   quest: Quests;
+//   @ManyToOne(() => Quest, (quest) => quest.questions)
+//   quest: Quest;
 //
 //   @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
 //   answers: Answer[];
@@ -31,9 +31,9 @@ export class Question {
   @Column({ type: 'int' })
   correct_answer: number;
 
-  @ManyToOne(() => Quests, (quest) => quest.questions)
+  @ManyToOne(() => Quest, (quest) => quest.questions)
   @JoinColumn({ name: 'quests_id' })
-  quest: Quests;
+  quest: Quest;
 
   @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
   answers: Answer[];

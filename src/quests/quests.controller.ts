@@ -8,7 +8,6 @@ import {QuestDto} from "./dto/quests.dto";
 export class QuestsController {
   constructor(private readonly questsService: QuestsService) {}
 
-
   @Get()
   async getQuestList(): Promise<QuestDto[]> {
     return this.questsService.getQuestList();

@@ -11,6 +11,7 @@ import {QuestsService} from "./quests/quests.service";
 import {Quest} from "./quests/quests.entity";
 import {Answer} from "./quests/answer.entity";
 import {Question} from "./quests/question.entity";
+import {Role} from "./users/role.entity";
 
 @Module({
   imports: [
@@ -26,12 +27,12 @@ import {Question} from "./quests/question.entity";
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_DATABASE'),
-        entities: [User, Quest, Answer, Question],
+        entities: [User, Quest, Answer, Question, Role],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User, Quest, Answer, Question]),
+    TypeOrmModule.forFeature([User, Quest, Answer, Question, Role]),
   ],
   controllers: [UserController, QuestsController],
   providers: [UserService, QuestsService],

@@ -26,9 +26,6 @@ export class User {
   @UpdateDateColumn()
   modified_at: Date;
 
-  @Column()
-  grade: string;
-
   @ManyToOne(() => Role, role => role.users, { nullable: false })
   @JoinColumn({ name: 'role_id' })
   role: Role;

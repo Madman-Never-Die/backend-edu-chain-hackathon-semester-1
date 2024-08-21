@@ -35,6 +35,12 @@ export class Quest {
   @Column({ type: 'varchar', length: 200 })
   type: string;
 
+  @Column({ type: 'bigint', default: 0, transformer: { to: (value) => value, from: (value) => Number(value) } })
+  participation: number;
+
+  @Column({ default: 'Active' })
+  status: string;
+
   @OneToMany(() => Question, (question) => question.quest, { cascade: true })
   questions: Question[];
 }

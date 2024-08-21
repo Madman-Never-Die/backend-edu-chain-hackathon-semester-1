@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {Injectable, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {DeepPartial, FindManyOptions, Repository} from 'typeorm';
 import {RequestCreateQuestsDto} from './dto/requestCreateQuestsDto';
@@ -12,6 +12,8 @@ export class QuestsService {
     @InjectRepository(Quest)
     private questsRepository: Repository<Quest>,
   ) {}
+
+
 
 
   async getQuestList() {
@@ -77,6 +79,53 @@ export class QuestsService {
     return this.questsRepository.save(quest);
   }
 
+  async getQuestCountByProvider(walletAddress: string): Promise<number> {
+    return this.questsRepository.count({
+      where: {
+        provider: walletAddress
+      }
+    });
+  }
+
+  async getTotalParticipation(walletAddress: string): Promise<number> {
+    const result = await this.questsRepository
+      .createQueryBuilder('quest')
+      .select('SUM(quest.participation)', 'totalParticipation')
+      .where('quest.provider = :walletAddress', { walletAddress })
+      .getRawOne();
+
+    return result.totalParticipation || 0;
+  }
+
+  async getRecentQuests(
+    walletAddress: string,
+    page: number,
+    limit: number,
+  ): Promise<{ quests: Quest[]; total: number; page: number; limit: number }> {
+    const [quests, total] = await this.questsRepository.findAndCount({
+      where: { provider: walletAddress },
+      order: { created_at: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return {
+      quests,
+      total,
+      page,
+      limit,
+    };
+  }
+
+  async incrementParticipation(id: number): Promise<Quest> {
+    console.log("@")
+    const questId = BigInt(id); // Convert the number to bigint
+    const quest = await this.questsRepository.findOne({ where: { id: questId } });
+    if (!quest) {
+      throw new NotFoundException(`Quest with ID ${id} not found`);
+    }
+    quest.participation += 1;
+    return this.questsRepository.save(quest);
+  }
 
 }
-

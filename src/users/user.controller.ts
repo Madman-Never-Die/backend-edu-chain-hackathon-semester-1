@@ -12,8 +12,12 @@ export class UserController {
   }
 
   @Post('create')
-  async createUser(@Body() userData: { walletAddress: string; roleId: number }) {
-    return this.userService.createUser(userData.walletAddress, userData.roleId);
+  async createUser(@Body() userData: { nickname: string, walletAddress: string; roleId: number }) {
+    return this.userService.createUser(
+      userData.nickname,
+      userData.walletAddress,
+      userData.roleId,
+    );
   }
 
 }

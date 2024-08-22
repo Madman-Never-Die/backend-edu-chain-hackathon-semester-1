@@ -31,13 +31,13 @@ export class UserService {
     }
   }
 
-  async createUser(walletAddress: string, roleId: number) {
+  async createUser(nickname: string, walletAddress: string, roleId: number) {
     const role = await this.rolesRepository.findOne({ where: { id: roleId } });
     if (!role) {
       throw new Error('Invalid role');
     }
 
-    const nickname = this.generateRandomNickname();
+    // const nickname = this.generateRandomNickname();
 
     const newUser = this.usersRepository.create({
       wallet_address: walletAddress,

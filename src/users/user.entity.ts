@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-  JoinColumn
+  JoinColumn, OneToMany
 } from 'typeorm';
-import {Role} from "./role.entity";
+import {Role} from "../role/role.entity";
+import {ParticipantEntity} from "../participant.entity";
+import {UserQuestAnswer} from "./userQuestAnswer";
 
 @Entity()
 export class User {
@@ -29,4 +31,10 @@ export class User {
   @ManyToOne(() => Role, role => role.users, { nullable: false })
   @JoinColumn({ name: 'role_id' })
   role: Role;
+
+  @OneToMany(() => ParticipantEntity, participant => participant.user)
+  participations: ParticipantEntity[];
+
+  @OneToMany(() => UserQuestAnswer, userQuestAnswer => userQuestAnswer.user)
+  questAnswers: UserQuestAnswer[];
 }

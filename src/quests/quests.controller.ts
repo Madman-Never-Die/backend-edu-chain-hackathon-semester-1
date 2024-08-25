@@ -4,9 +4,21 @@ import { RequestCreateQuestsDto } from './dto/requestCreateQuestsDto';
 import { Quest } from './quests.entity';
 import { QuestDto } from './dto/quests.dto';
 
+interface SubmitQuestData {
+  id: number;
+  userWalletAddress: string;
+  selectedAnswers: Record<string, { id: number; content: string; correctAnswer: boolean }>;
+  isLiked: boolean
+}
 @Controller('quests')
 export class QuestsController {
   constructor(private readonly questsService: QuestsService) {}
+
+  @Post('submit')
+  async submitQuest(@Body() submitData: SubmitQuestData) {
+    const { id: questId, userWalletAddress, selectedAnswers, isLiked } = submitData;
+    return this.questsService.processQuestSubmission(questId, userWalletAddress, selectedAnswers, isLiked);
+  }
 
   @Get()
   async getQuestList(): Promise<QuestDto[]> {

@@ -8,6 +8,8 @@ import {
 } from 'typeorm';
 import { Question } from './question.entity';
 import {questsType} from "./dto/requestCreateQuestsDto";
+import {ParticipantEntity} from "../participant.entity";
+import {UserQuestAnswer} from "../users/userQuestAnswer";
 
 @Entity()
 export class Quest {
@@ -41,6 +43,21 @@ export class Quest {
   @Column({ default: 'Active' })
   status: string;
 
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  start_date: Date;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  end_date: Date;
+
+  @Column({ type: 'bigint', default: 0, nullable: false })
+  likes: number;
+
   @OneToMany(() => Question, (question) => question.quest, { cascade: true })
   questions: Question[];
+
+  @OneToMany(() => ParticipantEntity, participant => participant.quest)
+  participants: ParticipantEntity[];
+
+  @OneToMany(() => UserQuestAnswer, userQuestAnswer => userQuestAnswer.quest)
+  userAnswers: UserQuestAnswer[];
 }

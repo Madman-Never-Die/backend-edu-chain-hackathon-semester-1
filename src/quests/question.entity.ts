@@ -1,6 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn} from 'typeorm';
 import { Quest } from './quests.entity';
 import { Answer } from './answer.entity';
+import {UserQuestAnswer} from "../users/userQuestAnswer";
 
 @Entity()
 export class Question {
@@ -19,4 +20,7 @@ export class Question {
 
   @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
   answers: Answer[];
+
+  @OneToMany(() => UserQuestAnswer, userQuestAnswer => userQuestAnswer.question)
+  userAnswers: UserQuestAnswer[];
 }

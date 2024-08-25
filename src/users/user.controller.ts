@@ -20,4 +20,10 @@ export class UserController {
     );
   }
 
+  // dashboard
+  @Get(':walletAddress/quests')
+  async getUserQuests(@Param('walletAddress') walletAddress: string) {
+    return this.userService.getQuestsByWalletAddress(walletAddress);
+  }
+
 }

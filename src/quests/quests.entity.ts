@@ -51,13 +51,12 @@ export class Quest {
 
   @Column({ type: 'bigint', default: 0, nullable: false })
   likes: number;
-
   @OneToMany(() => Question, (question) => question.quest, { cascade: true })
   questions: Question[];
 
-  @OneToMany(() => ParticipantEntity, participant => participant.quest)
+  @OneToMany(() => ParticipantEntity, participant => participant.quest, { cascade: true })
   participants: ParticipantEntity[];
 
-  @OneToMany(() => UserQuestAnswer, userQuestAnswer => userQuestAnswer.quest)
+  @OneToMany(() => UserQuestAnswer, userQuestAnswer => userQuestAnswer.quest, { cascade: true })
   userAnswers: UserQuestAnswer[];
 }

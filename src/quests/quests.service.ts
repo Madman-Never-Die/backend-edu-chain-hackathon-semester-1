@@ -136,6 +136,8 @@ export class QuestsService {
           correctAnswer: index === question.correct_answer,
         })),
       })),
+      participation: quest.participation,
+      likes: quest.likes,
     }));
   }
 
@@ -210,6 +212,26 @@ export class QuestsService {
     }
     quest.participation += 1;
     return this.questsRepository.save(quest);
+  }
+
+
+  async deleteQuests(id: number): Promise<boolean> {
+    try {
+      const questId = BigInt(id);
+      const quest = await this.questsRepository.findOne({ where: { id: questId } });
+
+      if (!quest) {
+        throw new NotFoundException(`Quest with ID ${id} not found`);
+      }
+
+      const result = await this.questsRepository.remove(quest);
+      console.log('Deleted quest:', result);
+
+      return true;
+    } catch (error) {
+      console.error('퀘스트 삭제 중 오류 발생:', error);
+      return false;
+    }
   }
 
 }

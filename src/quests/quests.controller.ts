@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Query} from '@nestjs/common';
 import { QuestsService } from './quests.service';
 import { RequestCreateQuestsDto } from './dto/requestCreateQuestsDto';
 import { Quest } from './quests.entity';
@@ -19,6 +19,13 @@ export class QuestsController {
     const { id: questId, userWalletAddress, selectedAnswers, isLiked } = submitData;
     return this.questsService.processQuestSubmission(questId, userWalletAddress, selectedAnswers, isLiked);
   }
+
+  @Delete(':id')
+  async deleteQuest(@Param('id') id: number): Promise<boolean> {
+    return this.questsService.deleteQuests(id);
+  }
+
+
 
   @Get()
   async getQuestList(): Promise<QuestDto[]> {
@@ -63,4 +70,5 @@ export class QuestsController {
   async participateInQuest(@Param('id') id: number): Promise<Quest> {
     return this.questsService.incrementParticipation(id);
   }
+
 }

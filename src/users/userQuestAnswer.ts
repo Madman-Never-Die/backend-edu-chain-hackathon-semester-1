@@ -20,11 +20,11 @@ export class UserQuestAnswer {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Quest, quest => quest.userAnswers)
+  @ManyToOne(() => Quest, quest => quest.userAnswers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'quest_id' })
   quest: Quest;
 
-  @ManyToOne(() => Question, question => question.userAnswers)
+  @ManyToOne(() => Question, question => question.userAnswers, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'question_id' })
   question: Question;
 

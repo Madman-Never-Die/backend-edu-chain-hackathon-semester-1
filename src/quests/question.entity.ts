@@ -14,13 +14,13 @@ export class Question {
   @Column({ type: 'int' })
   correct_answer: number;
 
-  @ManyToOne(() => Quest, (quest) => quest.questions)
+  @ManyToOne(() => Quest, (quest) => quest.questions, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'quests_id' })
   quest: Quest;
 
   @OneToMany(() => Answer, (answer) => answer.question, { cascade: true })
   answers: Answer[];
 
-  @OneToMany(() => UserQuestAnswer, userQuestAnswer => userQuestAnswer.question)
+  @OneToMany(() => UserQuestAnswer, userQuestAnswer => userQuestAnswer.question, { cascade: true })
   userAnswers: UserQuestAnswer[];
 }

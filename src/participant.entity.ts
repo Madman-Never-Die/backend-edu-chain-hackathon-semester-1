@@ -21,7 +21,7 @@ export class ParticipantEntity {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Quest, quest => quest.participants, { nullable: false })
+  @ManyToOne(() => Quest, quest => quest.participants, { nullable: false, onDelete: 'CASCADE' })
   @JoinColumn({ name: 'quest_id' })
   quest: Quest;
 

@@ -51,6 +51,10 @@ export class Quest {
 
   @Column({ type: 'bigint', default: 0, nullable: false })
   likes: number;
+
+  @Column({ type: 'varchar', length: 255 })
+  paper_url: string;
+
   @OneToMany(() => Question, (question) => question.quest, { cascade: true })
   questions: Question[];
 

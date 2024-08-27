@@ -16,9 +16,10 @@ class CreateQuestionDto {
 }
 
 export class RequestCreateQuestsDto {
-  liquidity_provider: string;  // 여기서 필드명을 데이터베이스 필드명과 일치시킴
+  liquidity_provider: string;
   provider: string;
   title: string;
+  paper_url: string
   content: string;
   type: questsType;
   questions: CreateQuestionDto[];

@@ -143,8 +143,6 @@ export class QuestsService {
 
   async createQuest(createQuestDto: RequestCreateQuestsDto): Promise<Quest> {
     const { questions, ...questData } = createQuestDto;
-    console.log(questions)
-    console.log(questData)
 
     const quest = this.questsRepository.create({
       ...questData,
